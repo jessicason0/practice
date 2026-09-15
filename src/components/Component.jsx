@@ -1,65 +1,49 @@
 import React, { useState } from "react";
 import "./component.css";
 
-const developments = [
-  {
-    title: "JavaScript Basics",
-    desc: "Lorem dolor sit amet consectetur adipisicing elit.",
-  },
-  {
-    title: "React.js Overview",
-    desc: "Lorem ipsum dolor sit amet, adipisicing elit.",
-  },
-  {
-    title: "Node.js",
-    desc: "Lorem ipsum dolor sit amet consectetur elit.",
-  },
-  {
-    title: "Full-Stack Developement",
-    desc: "Lorem ipsum amet consectetur, adipisicing elit.",
-  },
-];
+const answer = "sunil";
 
 function Component() {
-  const [currentItem, setCurrentItem] = useState("");
+  const [userInput, setUserInput] = useState("");
+  const [userGuess, setUserGuess] = useState([]);
 
-  function titleClickHandle(title) {
-    if (title === currentItem) setCurrentItem("");
-    else setCurrentItem(title);
+  function handleSubmit() {
+    const guesses = [];
+
+    if (userInput.length !== 5) return;
+
+    for (let i = 0; i < answer.length; i++) {
+      if (answer[i] === userInput[i]) {
+        guesses.push({ letter: userInput[i], color: "green" });
+      } else if (answer.includes(userInput[i])) {
+        guesses.push({ letter: userInput[i], color: "yellow" });
+      } else if (answer[i] !== userInput[i]) {
+        guesses.push({ letter: userInput[i], color: "red" });
+      }
+    }
+
+    setUserGuess(guesses);
+    setUserInput("");
   }
 
   return (
-    <div className="dev__container">
-      <div className="dev__content">
-        {developments.map((item) => {
+    <div>
+      <div>
+        <input
+          type="text"
+          onChange={(e) => {
+            setUserInput(e.target.value);
+          }}
+          value={userInput}
+        />
+        <button onClick={handleSubmit}>Submit</button>
+      </div>
+
+      <div>
+        {userGuess.map((item, idx) => {
           return (
-            <div key={item.title} className="dev__item">
-              <button
-                onClick={() => titleClickHandle(item.title)}
-                className={`dev__btn-box ${currentItem === item.title ? "dev__btn-box--active" : ""}`}
-              >
-                <h2 className="dev__title">{item.title}</h2>
-                <div className="dev__title-arrow">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                    />
-                  </svg>
-                </div>
-              </button>
-              <p
-                className={`dev__desc ${currentItem === item.title ? "dev__desc--active" : ""}`}
-              >
-                {item.desc}
-              </p>
+            <div key={idx}>
+              <div style={{ color: item.color }}>{item.letter}</div>
             </div>
           );
         })}

@@ -5,8 +5,8 @@ import Practice from "./components/Practice";
 function App() {
   return (
     <div>
-      {/* <Practice /> */}
-      <Component />
+      <Practice />
+      {/* <Component /> */}
     </div>
   );
 }
